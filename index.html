@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Happy Love Anniversary 💜</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Raleway:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="lightbox" id="lightbox" onclick="closeImage()">
+        <span class="close-lightbox">&times;</span>
+        <img src="" class="lightbox-img" id="lightbox-img">
+    </div>
+
+    <div id="intro-overlay">
+        <canvas id="celebration-canvas"></canvas>
+
+        <div class="cine-text-container">
+            <h1 class="cine-text" id="intro-text">Happy Love Anniversary 💜</h1>
+            <h2 class="cine-sub" id="intro-sub">My Love</h2>
+        </div>
+
+        <div class="cake-stage" id="cake-model">
+            <div class="plate"></div>
+            
+            <div class="layer layer-1"></div>
+            
+            <div class="layer layer-2">
+                <div class="drip" style="left: 20px; height: 15px;"></div>
+                <div class="drip" style="left: 50px; height: 25px;"></div>
+                <div class="drip" style="left: 100px; height: 20px;"></div>
+                <div class="drip" style="left: 150px; height: 10px;"></div>
+            </div>
+            
+            <div class="layer layer-3">
+                <div class="drip" style="left: 30px; height: 20px;"></div>
+                <div class="drip" style="left: 90px; height: 30px;"></div>
+            </div>
+
+            <div class="candle-stick">
+                <div class="flame-anim"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="main-site">
+        <div class="bg-particles"></div>
+
+        <section class="hero reveal">
+            <div class="container">
+                <div class="hero-card">
+                    <h1 class="hero-title">Another Year<br>Of You</h1>
+                    <p style="font-size: 1.2rem; font-family: var(--font-script); margin-bottom: 20px;">The most beautiful chapter of my life</p>
+                    <button class="btn-premium" onclick="document.getElementById('memories').scrollIntoView({behavior: 'smooth'})">Explore Our Journey</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="container reveal">
+            <div class="love-note">
+                <div class="section-title">
+                    <span>From my heart</span>
+                    A Letter To You
+                </div>
+                <p class="note-text">
+                    "Happy Love Anniversary 💜
+I wish we celebrate our love anniversary like this for many more years.
+In every year, I will try to get angry less and love you more.
+The way you have changed me is something I truly feel.
+
+In my life, after you came, I felt both happiness and sadness, but I am more happy because of you.
+Every small thing you do for me makes my love for you grow more and more.
+
+My love is only for you.
+Even if your heart stops beating, my love for you will never stop.
+
+Whatever you think or feel, I will understand you and stand with you.
+I will always be there for you.
+I will never leave you for anyone else, because you are the most important person in my life.
+
+From the first day till the last day, my love for you will always remain the same.
+Don’t worry about anything.
+Just like this anniversary, we will be together for every anniversary, as long as we live.
+
+Getting you in my life is my biggest luck and choice.
+We were together, we are together, and we will always be together.""
+
+
+                </p>
+                <p class="note-text">
+                    Love you so much  💜
+                    Ya muh, clm, pattu.............. 💜"
+                </p>
+                <div style="font-family: var(--font-script); font-size: 2rem; color: var(--rose-gold);">Forever Yours</div>
+            </div>
+        </section>
+
+        <section id="memories" class="container reveal">
+            <div class="section-title">
+                <span>Cherished Moments</span>
+                Our Gallery
+            </div>
+            <div class="memories-grid">
+                <div class="memory-card" onclick="openImage('imag/photos 1.png')">
+                    <img src="imag/photos 1.png" alt="Holding Hands">
+                    <div class="memory-overlay">
+                        <h3>Side by Side</h3>
+                        <p>No matter where life takes us.</p>
+                    </div>
+                </div>
+                <div class="memory-card" onclick="openImage('imag/photos 2.png')">
+                    <img src="imag/photos 2.png" alt="Sunset Love">
+                    <div class="memory-overlay">
+                        <h3>Golden Hours</h3>
+                        <p>Every sunset with you is magic.</p>
+                    </div>
+                </div>
+                <div class="memory-card" onclick="openImage('imag/photos 3.png')">
+                    <img src="imag/photos 3.png" alt="Party">
+                    <div class="memory-overlay">
+                        <h3>Pure Joy</h3>
+                        <p>Your smile is my favorite view.</p>
+                    </div>
+                </div>
+                <div class="memory-card" onclick="openImage('imag/photos 4.png')">
+                    <img src="imag/photos 4.png" alt="Party">
+                    <div class="memory-overlay">
+                        <h3>Pure Joy</h3>
+                        <p>Your smile is my favorite view.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="container reveal" style="margin-bottom: 100px;">
+            <div class="locked-wrapper">
+                <div class="locked-inner">
+                    <div class="section-title">
+                        <span>Private Collection</span>
+                        Secret Vault
+                    </div>
+                    <p style="margin-bottom: 20px;">Enter our special date (DDMMYY) to unlock hidden memories.</p>
+                    
+                    <input type="password" id="vault-pass" class="lock-input" placeholder="******" maxlength="8">
+                    <br>
+                    <button class="btn-premium" onclick="unlockVault()">Unlock Secrets</button>
+                    <div id="vault-error" style="color: red; margin-top: 10px; height: 20px;"></div>
+
+                    <div id="hidden-gallery">
+                        <img src="imag/photo 1.png" class="hidden-img" alt="Secret 1" onclick="openImage('imag/photo 1.png')">
+                        <img src="imag/photo 2.png" class="hidden-img" alt="Secret 2" onclick="openImage('imag/photo 2.png')">
+                        <img src="imag/photo 3.png" class="hidden-img" alt="Secret 3" onclick="openImage('imag/photo 3.png')">
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+   <script src="script.js"></script>
+</body>
+</html>
