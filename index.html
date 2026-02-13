@@ -3,159 +3,579 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <title>Happy Love Anniversary 💜</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Raleway:wght@300;400;500&display=swap" rel="stylesheet">
+    <title>Happy Welitains Day 💖</title>
+    <!-- Tailwind + Fonts + Libraries -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@300;400;600&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+            background: #330000; /* deep dark red */
+            color: #ffe6e6;
+        }
+        /* floating hearts */
+        .heart-float {
+            position: fixed;
+            font-size: 20px;
+            animation: floatUp 4s ease-in infinite;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.8;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+            50% { opacity: 1; transform: translateY(50vh) scale(1.2); }
+            100% { transform: translateY(-20vh) scale(0.8); opacity: 0; }
+        }
+        /* balloon */
+        .balloon {
+            position: fixed;
+            bottom: -100px;
+            font-size: 45px;
+            animation: floatBalloon 7s ease-in infinite;
+            z-index: 2;
+            filter: drop-shadow(0 0 15px #ff9999);
+        }
+        @keyframes floatBalloon {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            20% { opacity: 1; }
+            100% { transform: translateY(-130vh) rotate(15deg); opacity: 0; }
+        }
+        /* heartbeat */
+        .heart-beat { animation: heartbeat 1.5s infinite; }
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            14% { transform: scale(1.2); }
+            28% { transform: scale(1); }
+            42% { transform: scale(1.2); }
+            70% { transform: scale(1); }
+        }
+        /* glass container */
+        .game-container {
+            background: rgba(60, 0, 0, 0.5);
+            backdrop-filter: blur(8px);
+            border: 2px solid #b3003b;
+            box-shadow: 0 0 30px #ff4d6d;
+            border-radius: 40px;
+        }
+        /* falling hearts */
+        .falling-heart {
+            position: absolute;
+            color: #ff1a4c;
+            font-size: 38px;
+            cursor: pointer;
+            animation: fall linear forwards;
+            filter: drop-shadow(0 0 20px #ff99aa);
+            z-index: 30;
+            text-shadow: 0 0 20px #ffb3b3;
+        }
+        @keyframes fall {
+            0% { transform: translateY(-60px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(580px) rotate(360deg); opacity: 0.7; }
+        }
+        /* slideshow */
+        .slideshow-container {
+            position: relative;
+            height: 400px;
+            overflow: hidden;
+            border-radius: 40px;
+            border: 3px solid #b3004b;
+        }
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1.5s ease;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .slide.active { opacity: 1; }
+        .slide-overlay {
+            background: #330000cc;
+            padding: 30px 50px;
+            border-radius: 60px;
+            color: white;
+            font-size: 28px;
+            font-family: 'Dancing Script', cursive;
+            border: 2px solid #ff6b8b;
+            box-shadow: 0 0 40px #ff3333;
+        }
+        /* quiz options */
+        .quiz-option {
+            background: rgba(255, 80, 120, 0.3);
+            padding: 16px;
+            margin: 15px 0;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: 0.3s;
+            border: 2px solid #ff99aa;
+            font-weight: 600;
+            font-size: 1.3rem;
+        }
+        .quiz-option:hover {
+            background: #cc0044;
+            transform: scale(1.05);
+            border-color: white;
+            box-shadow: 0 0 30px #ff4d6d;
+        }
+        .quiz-option.correct {
+            background: #8b0000;
+            animation: correctFlash 0.6s;
+            border: 4px solid gold;
+        }
+        @keyframes correctFlash {
+            0% { background: #ff4d6d; }
+            50% { background: #ffb3b3; transform: scale(1.1); }
+        }
+        /* star rating */
+        .rating-star {
+            font-size: 3.5rem;
+            cursor: pointer;
+            color: #aaa;
+            transition: 0.2s;
+            display: inline-block;
+        }
+        .rating-star.active, .rating-star:hover {
+            color: #ffd700;
+            text-shadow: 0 0 30px gold;
+            transform: scale(1.2);
+        }
+        .rating-box {
+            background: #4d0000b3;
+            border-radius: 100px;
+            padding: 20px 30px;
+            border: 2px solid #ffb3b3;
+        }
+        /* modal */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: #1a0000f2;
+            z-index: 20000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal.show { display: flex; }
+        .modal-content {
+            background: #4d0000;
+            padding: 40px;
+            border-radius: 60px;
+            text-align: center;
+            border: 5px solid #ff4d6d;
+            box-shadow: 0 0 100px #ff1a4c;
+            max-width: 500px;
+        }
+        /* unclickable 10s overlay */
+        #freeze-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 30000;
+            backdrop-filter: blur(8px);
+            font-size: 3rem;
+            color: white;
+            font-family: 'Dancing Script', cursive;
+            flex-direction: column;
+            pointer-events: none;
+        }
+        #freeze-overlay.active { display: flex; pointer-events: all; }
+        .timer-digit {
+            font-size: 5rem;
+            background: #b3003b;
+            padding: 20px 40px;
+            border-radius: 80px;
+            margin-top: 20px;
+            border: 5px solid gold;
+        }
+    </style>
 </head>
 <body>
-    <div class="lightbox" id="lightbox" onclick="closeImage()">
-        <span class="close-lightbox">&times;</span>
-        <img src="" class="lightbox-img" id="lightbox-img">
-    </div>
 
-    <div id="intro-overlay">
-        <canvas id="celebration-canvas"></canvas>
+<!-- AUDIO (autoplay blocked, start with button) -->
+<audio id="bgMusic" loop preload="auto">
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3" type="audio/mpeg">
+</audio>
 
-        <div class="cine-text-container">
-            <h1 class="cine-text" id="intro-text">Happy Love Anniversary 💜</h1>
-            <h2 class="cine-sub" id="intro-sub">My Love</h2>
+<!-- FLOATING HEARTS + BALLOONS -->
+<div id="hearts-container"></div>
+<div id="balloons-container"></div>
+
+<!-- FREEZE OVERLAY (10 sec unclickable punishment) -->
+<div id="freeze-overlay">
+    <span>😵 You touched the forbidden heart!</span>
+    <div class="timer-digit" id="freeze-timer">10</div>
+    <span>seconds frozen... 💔</span>
+</div>
+
+<!-- MAIN CONTAINER -->
+<div class="container mx-auto px-4 py-8 relative z-10">
+
+    <!-- 1️⃣ HERO SECTION with updated title -->
+    <section id="hero" class="min-h-screen flex flex-col items-center justify-center text-center" data-aos="fade-up">
+        <h1 class="text-6xl md:text-8xl font-bold mb-6 font-['Dancing_Script'] text-[#ffcccc] drop-shadow-[0_0_50px_#ff4d6d] animate-pulse">
+            💌 Happy Welitains Day My Love 💌
+        </h1>
+        <p class="text-2xl md:text-4xl text-pink-200 mb-8 max-w-4xl" data-aos="fade-up" data-aos-delay="200">
+            “You made my world blush in red.”
+        </p>
+        <!-- Button now scrolls to next section (love message) -->
+        <button onclick="startJourney()" class="bg-[#b3003b] text-white px-12 py-6 rounded-full text-2xl font-bold hover:bg-[#ff1a4c] transform hover:scale-125 transition-all shadow-2xl animate-bounce border-4 border-pink-300">
+            💖 Start Our Journey 💖
+        </button>
+    </section>
+
+    <!-- 2️⃣ LOVE MESSAGE with typed (target for scroll) -->
+    <section id="love-message" class="py-20" data-aos="fade-up">
+        <div class="game-container rounded-3xl p-12 max-w-4xl mx-auto text-center">
+            <div class="heart-beat text-8xl mb-6">🥀❤️</div>
+            <div id="typed-text" class="text-3xl md:text-4xl font-['Dancing_Script'] leading-relaxed text-pink-100"></div>
+            <div class="mt-8 text-7xl heart-beat">❤️‍🔥</div>
+        </div>
+    </section>
+
+    <!-- 3️⃣ LOVE GAMES -->
+    <section class="py-20" data-aos="fade-up">
+        <h2 class="text-6xl font-['Dancing_Script'] text-center mb-12 text-[#ffb3b3]">💕 Play for Love 💕</h2>
+        <div class="flex justify-center gap-8 mb-12 flex-wrap">
+            <button onclick="showQuiz()" class="bg-[#b3003b] px-10 py-5 rounded-full text-2xl hover:scale-110 transition-all shadow-xl border-2 border-white">💝 Love Quiz</button>
+            <button onclick="showHeartGame()" class="bg-[#b3003b] px-10 py-5 rounded-full text-2xl hover:scale-110 transition-all shadow-xl border-2 border-white">❤️ Catch Hearts</button>
         </div>
 
-        <div class="cake-stage" id="cake-model">
-            <div class="plate"></div>
-            
-            <div class="layer layer-1"></div>
-            
-            <div class="layer layer-2">
-                <div class="drip" style="left: 20px; height: 15px;"></div>
-                <div class="drip" style="left: 50px; height: 25px;"></div>
-                <div class="drip" style="left: 100px; height: 20px;"></div>
-                <div class="drip" style="left: 150px; height: 10px;"></div>
+        <!-- QUIZ GAME -->
+        <div id="quizGame" class="game-container rounded-3xl p-8 max-w-2xl mx-auto hidden">
+            <h3 class="text-4xl mb-8 font-['Dancing_Script']" id="quizQuestion">Who loves more? 💞</h3>
+            <div id="quizOptions" class="space-y-4">
+                <div class="quiz-option" onclick="checkAnswer(this, 'You')">You ❤️</div>
+                <div class="quiz-option" onclick="checkAnswer(this, 'Me')">Me 💖</div>
+                <div class="quiz-option" onclick="checkAnswer(this, 'Both')">Both Equally 💑</div>
             </div>
-            
-            <div class="layer layer-3">
-                <div class="drip" style="left: 30px; height: 20px;"></div>
-                <div class="drip" style="left: 90px; height: 30px;"></div>
-            </div>
+            <div id="quizMessage" class="mt-8 text-3xl hidden font-['Dancing_Script']"></div>
+        </div>
 
-            <div class="candle-stick">
-                <div class="flame-anim"></div>
+        <!-- CATCH HEART GAME (with forbidden heart and 10s freeze) -->
+        <div id="heartGame" class="game-container rounded-3xl p-6 max-w-2xl mx-auto hidden relative" style="height: 550px;">
+            <div class="absolute top-4 right-6 text-3xl z-40">❤️ <span id="score">0</span>/20</div>
+            <div id="gameArea" class="relative w-full h-full"></div>
+            <div id="gameMessage" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-4xl text-center hidden bg-black/70 p-8 rounded-full border-4 border-red-500"></div>
+        </div>
+    </section>
+
+    <!-- 4️⃣ MEMORY SLIDESHOW with local images (imag/ folder) -->
+    <section class="py-20" data-aos="fade-up">
+        <h2 class="text-5xl font-['Dancing_Script'] text-center mb-12">📸 Red Moments 📸</h2>
+        <div class="slideshow-container max-w-4xl mx-auto">
+            <div class="slide active" style="background-image: linear-gradient(0deg, #33000099, #33000099), url('imag/new\ img.jpeg');">
+                <div class="slide-overlay">Kiss under red lights 💋</div>
+            </div>
+            <div class="slide" style="background-image: linear-gradient(0deg, #33000099, #33000099), url('imag/new\ img.jpeg');">
+                <div class="slide-overlay">Hold my hand forever 🥀</div>
+            </div>
+            <div class="slide" style="background-image: linear-gradient(0deg, #33000099, #33000099), url('imag/new\ img.jpeg');">
+                <div class="slide-overlay">You + me = eternity 🔥</div>
+            </div>
+            <div class="slide" style="background-image: linear-gradient(0deg, #33000099, #33000099), url('imag/new\ img.jpeg');">
+                <div class="slide-overlay">My favorite view ❤️</div>
             </div>
         </div>
+        <p class="text-center text-3xl mt-6 font-['Dancing_Script']">"Red like my heart for you."</p>
+    </section>
+
+    <!-- 5️⃣ STAR RATING & COMMENT SECTION (1 to 5 stars with comment) -->
+    <section class="py-20" data-aos="fade-up">
+        <div class="game-container max-w-3xl mx-auto p-10 text-center">
+            <h2 class="text-5xl font-['Dancing_Script'] mb-8">⭐ Rate our love ⭐</h2>
+            <div class="rating-box inline-block px-10 py-6">
+                <div class="flex justify-center gap-4 mb-6" id="starContainer">
+                    <span class="rating-star" data-value="1" onclick="setRating(1)">★</span>
+                    <span class="rating-star" data-value="2" onclick="setRating(2)">★</span>
+                    <span class="rating-star" data-value="3" onclick="setRating(3)">★</span>
+                    <span class="rating-star" data-value="4" onclick="setRating(4)">★</span>
+                    <span class="rating-star" data-value="5" onclick="setRating(5)">★</span>
+                </div>
+                <p class="text-2xl mb-4" id="ratingFeedback">You haven't rated yet</p>
+                <input type="text" id="loveComment" placeholder="Write your feelings..." class="w-full p-4 rounded-full bg-[#330000] text-white border-2 border-pink-400 text-xl text-center placeholder-pink-300">
+                <button onclick="submitLove()" class="mt-6 bg-[#b3003b] px-12 py-4 rounded-full text-2xl hover:scale-105 transition-all border-2 border-white shadow-2xl">💬 Share</button>
+                <div id="commentResponse" class="mt-8 text-3xl font-['Dancing_Script'] min-h-[80px]"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6️⃣ FINAL SURPRISE -->
+    <section class="min-h-screen flex flex-col items-center justify-center text-center" data-aos="fade-up">
+        <div class="relative">
+            <h2 class="text-6xl md:text-7xl font-['Dancing_Script'] mb-10 leading-relaxed text-[#ffc2c2]">
+                You are my today.<br> You are my tomorrow.<br> You are my forever. ❤️
+            </h2>
+            <button onclick="showSurprise()" class="bg-[#b3003b] text-white px-20 py-8 rounded-full text-4xl font-bold hover:bg-[#ff1a4c] transform hover:scale-125 transition-all shadow-2xl animate-pulse border-4 border-red-200">
+                💘 Click For Surprise
+            </button>
+        </div>
+    </section>
+</div>
+
+<!-- SURPRISE MODAL -->
+<div id="surpriseModal" class="modal">
+    <div class="modal-content">
+        <h2 class="text-6xl font-['Dancing_Script'] mb-8">💞 Stay with me forever?</h2>
+        <div class="flex gap-6 justify-center">
+            <button onclick="answerYes()" class="bg-[#b3003b] px-10 py-5 rounded-full text-3xl hover:scale-125 transition-all border-4 border-pink-200">Yes 💖</button>
+            <button onclick="answerYes()" class="bg-[#b3003b] px-10 py-5 rounded-full text-3xl hover:scale-125 transition-all border-4 border-pink-200">Always ❤️</button>
+        </div>
     </div>
+</div>
 
-    <div id="main-site">
-        <div class="bg-particles"></div>
+<script>
+    AOS.init({ duration: 1200, once: false });
 
-        <section class="hero reveal">
-            <div class="container">
-                <div class="hero-card">
-                    <h1 class="hero-title">Another Year<br>Of You</h1>
-                    <p style="font-size: 1.2rem; font-family: var(--font-script); margin-bottom: 20px;">The most beautiful chapter of my life</p>
-                    <button class="btn-premium" onclick="document.getElementById('memories').scrollIntoView({behavior: 'smooth'})">Explore Our Journey</button>
-                </div>
-            </div>
-        </section>
+    // Background music play (requires user gesture)
+    function startExperience() {
+        document.getElementById('bgMusic').play().catch(e=>console.log);
+        confetti({particleCount:150, spread:80, origin:{y:0.6}});
+    }
 
-        <section class="container reveal">
-            <div class="love-note">
-                <div class="section-title">
-                    <span>From my heart</span>
-                    A Letter To You
-                </div>
-                <p class="note-text">
-                    "Happy Love Anniversary 💜
-I wish we celebrate our love anniversary like this for many more years.
-In every year, I will try to get angry less and love you more.
-The way you have changed me is something I truly feel.
+    // New function: start journey = play music, confetti, AND scroll to love message
+    function startJourney() {
+        startExperience();  // music + confetti
+        // smooth scroll to the love message section
+        document.getElementById('love-message').scrollIntoView({ behavior: 'smooth' });
+    }
 
-In my life, after you came, I felt both happiness and sadness, but I am more happy because of you.
-Every small thing you do for me makes my love for you grow more and more.
+    // Floating hearts + balloons
+    function createFloatingHeart() {
+        const h = document.createElement('div');
+        h.className = 'heart-float';
+        h.innerHTML = ['❤️', '💖', '💕', '💗', '🥀','❤️‍🔥'][Math.floor(Math.random()*6)];
+        h.style.left = Math.random()*100+'%';
+        h.style.animationDuration = (Math.random()*3+3)+'s';
+        h.style.fontSize = (Math.random()*20+25)+'px';
+        document.getElementById('hearts-container').appendChild(h);
+        setTimeout(()=>h.remove(), 4000);
+    }
+    function createBalloon() {
+        const b = document.createElement('div');
+        b.className = 'balloon';
+        b.innerHTML = '🎈';
+        b.style.left = Math.random()*100+'%';
+        b.style.animationDuration = (Math.random()*4+5)+'s';
+        b.style.fontSize = (Math.random()*20+40)+'px';
+        document.getElementById('balloons-container').appendChild(b);
+        setTimeout(()=>b.remove(), 8000);
+    }
+    setInterval(createFloatingHeart, 250);
+    setInterval(createBalloon, 1800);
 
-My love is only for you.
-Even if your heart stops beating, my love for you will never stop.
+    // typed.js
+    window.onload = function() {
+        new Typed('#typed-text', {
+            strings: ['From the moment you arrived,<br>my world turned passionate red.<br>This Welitains Day is the day<br>my heart found its home. 🥀❤️'],
+            typeSpeed: 40, backSpeed: 0, loop: false, cursorChar: '❤️'
+        });
+        confetti({particleCount:50, spread:60});
+    };
 
-Whatever you think or feel, I will understand you and stand with you.
-I will always be there for you.
-I will never leave you for anyone else, because you are the most important person in my life.
+    // quiz
+    function showQuiz() {
+        document.getElementById('quizGame').classList.remove('hidden');
+        document.getElementById('heartGame').classList.add('hidden');
+        document.getElementById('quizMessage').classList.add('hidden');
+    }
+    function showHeartGame() {
+        document.getElementById('quizGame').classList.add('hidden');
+        document.getElementById('heartGame').classList.remove('hidden');
+        document.getElementById('gameMessage').classList.add('hidden');
+        score = 0; document.getElementById('score').innerText = '0';
+        startHeartGame();
+    }
 
-From the first day till the last day, my love for you will always remain the same.
-Don’t worry about anything.
-Just like this anniversary, we will be together for every anniversary, as long as we live.
+    function checkAnswer(el, ans) {
+        if(ans === 'Both') {
+            el.classList.add('correct');
+            document.getElementById('quizMessage').innerHTML = '🎉 Forever us. No right or wrong, just love. 🎉';
+            document.getElementById('quizMessage').classList.remove('hidden');
+            confetti({particleCount:200, spread:100});
+        } else {
+            alert('💔 Not that one... think with your heart!');
+        }
+    }
 
-Getting you in my life is my biggest luck and choice.
-We were together, we are together, and we will always be together.""
+    // HEART GAME
+    let score = 0;
+    let gameActive = false;
+    let heartGameInterval;
+    let frozen = false;
 
+    function startHeartGame() {
+        if (frozen) return;
+        gameActive = true;
+        const gameArea = document.getElementById('gameArea');
+        gameArea.innerHTML = '';
+        score = 0;
+        document.getElementById('score').innerText = '0';
+        document.getElementById('gameMessage').classList.add('hidden');
 
-                </p>
-                <p class="note-text">
-                    Love you so much  💜
-                    Ya muh, clm, pattu.............. 💜"
-                </p>
-                <div style="font-family: var(--font-script); font-size: 2rem; color: var(--rose-gold);">Forever Yours</div>
-            </div>
-        </section>
+        if (heartGameInterval) clearInterval(heartGameInterval);
+        heartGameInterval = setInterval(() => {
+            if (!gameActive || frozen) return;
+            if (score >= 20) {
+                gameActive = false;
+                document.getElementById('gameMessage').innerHTML = '💍 You caught 20 hearts! I am yours 💍';
+                document.getElementById('gameMessage').classList.remove('hidden');
+                confetti({particleCount:300});
+                clearInterval(heartGameInterval);
+                return;
+            }
+            const isBad = Math.random() < 0.05;
+            const heart = document.createElement('div');
+            heart.className = 'falling-heart';
+            if (isBad) {
+                heart.innerHTML = '🎯';
+                heart.style.color = '#800000';
+                heart.style.fontSize = '48px';
+                heart.dataset.bad = 'true';
+            } else {
+                heart.innerHTML = '❤️';
+                heart.dataset.bad = 'false';
+            }
+            heart.style.left = Math.random() * 85 + '%';
+            heart.style.animationDuration = (Math.random() * 2 + 2.2) + 's';
 
-        <section id="memories" class="container reveal">
-            <div class="section-title">
-                <span>Cherished Moments</span>
-                Our Gallery
-            </div>
-            <div class="memories-grid">
-                <div class="memory-card" onclick="openImage('imag/photos 1.png')">
-                    <img src="imag/photos 1.png" alt="Holding Hands">
-                    <div class="memory-overlay">
-                        <h3>Side by Side</h3>
-                        <p>No matter where life takes us.</p>
-                    </div>
-                </div>
-                <div class="memory-card" onclick="openImage('imag/photos 2.png')">
-                    <img src="imag/photos 2.png" alt="Sunset Love">
-                    <div class="memory-overlay">
-                        <h3>Golden Hours</h3>
-                        <p>Every sunset with you is magic.</p>
-                    </div>
-                </div>
-                <div class="memory-card" onclick="openImage('imag/photos 3.png')">
-                    <img src="imag/photos 3.png" alt="Party">
-                    <div class="memory-overlay">
-                        <h3>Pure Joy</h3>
-                        <p>Your smile is my favorite view.</p>
-                    </div>
-                </div>
-                <div class="memory-card" onclick="openImage('imag/photos 4.png')">
-                    <img src="imag/photos 4.png" alt="Party">
-                    <div class="memory-overlay">
-                        <h3>Pure Joy</h3>
-                        <p>Your smile is my favorite view.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+            heart.onclick = function() {
+                if (!gameActive || frozen) return;
+                if (this.dataset.bad === 'true') {
+                    triggerFreeze();
+                    this.remove();
+                    return;
+                }
+                score++;
+                document.getElementById('score').innerText = score;
+                this.remove();
+                confetti({particleCount:10, spread:30, origin: {y:0.5}});
+                if (score >= 20) {
+                    gameActive = false;
+                    document.getElementById('gameMessage').innerHTML = '💍 You caught my heart forever 💍';
+                    document.getElementById('gameMessage').classList.remove('hidden');
+                    confetti({particleCount:300});
+                    clearInterval(heartGameInterval);
+                }
+            };
+            gameArea.appendChild(heart);
+            setTimeout(() => { if (heart.parentNode) heart.remove(); }, 5000);
+        }, 800);
+    }
 
-        <section class="container reveal" style="margin-bottom: 100px;">
-            <div class="locked-wrapper">
-                <div class="locked-inner">
-                    <div class="section-title">
-                        <span>Private Collection</span>
-                        Secret Vault
-                    </div>
-                    <p style="margin-bottom: 20px;">Enter our special date (DDMMYY) to unlock hidden memories.</p>
-                    
-                    <input type="password" id="vault-pass" class="lock-input" placeholder="******" maxlength="8">
-                    <br>
-                    <button class="btn-premium" onclick="unlockVault()">Unlock Secrets</button>
-                    <div id="vault-error" style="color: red; margin-top: 10px; height: 20px;"></div>
+    function triggerFreeze() {
+        if (frozen) return;
+        frozen = true;
+        gameActive = false;
+        const overlay = document.getElementById('freeze-overlay');
+        const timerSpan = document.getElementById('freeze-timer');
+        overlay.classList.add('active');
+        let seconds = 10;
+        timerSpan.innerText = seconds;
+        const countInterval = setInterval(() => {
+            seconds--;
+            timerSpan.innerText = seconds;
+            if (seconds <= 0) {
+                clearInterval(countInterval);
+                overlay.classList.remove('active');
+                frozen = false;
+                if (!document.getElementById('heartGame').classList.contains('hidden') && score < 20) {
+                    gameActive = true;
+                }
+            }
+        }, 1000);
+    }
 
-                    <div id="hidden-gallery">
-                        <img src="imag/photo 1.png" class="hidden-img" alt="Secret 1" onclick="openImage('imag/photo 1.png')">
-                        <img src="imag/photo 2.png" class="hidden-img" alt="Secret 2" onclick="openImage('imag/photo 2.png')">
-                        <img src="imag/photo 3.png" class="hidden-img" alt="Secret 3" onclick="openImage('imag/photo 3.png')">
-                    </div>
-                </div>
-            </div>
-        </section>
-    </div>
-   <script src="script.js"></script>
+    // slideshow
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    setInterval(() => {
+        slides[currentSlide]?.classList.remove('active');
+        currentSlide = (currentSlide + 1) % slides.length;
+        slides[currentSlide]?.classList.add('active');
+    }, 3000);
+
+    // surprise modal & fireworks
+    function showSurprise() {
+        document.getElementById('surpriseModal').classList.add('show');
+        for(let i=0;i<30;i++) {
+            setTimeout(()=>{
+                confetti({particleCount:30, spread:100, origin: {x:Math.random(), y:Math.random()*0.5}});
+            }, i*50);
+        }
+    }
+    function answerYes() {
+        alert('💖 I LOVE YOU! Forever and always! 💖');
+        document.getElementById('surpriseModal').classList.remove('show');
+        for(let i=0;i<200;i+=10) setTimeout(()=>confetti({particleCount:50, spread:80}), i);
+    }
+
+    // STAR RATING (1-5) with comment
+    let currentRating = 0;
+    function setRating(val) {
+        currentRating = val;
+        const stars = document.querySelectorAll('.rating-star');
+        stars.forEach((s, idx) => {
+            if(idx < val) s.classList.add('active');
+            else s.classList.remove('active');
+        });
+        document.getElementById('ratingFeedback').innerHTML = `You gave ${val} star${val>1?'s':''} ❤️`;
+        confetti({particleCount:20, spread:30, origin:{y:0.5}});
+    }
+
+    function submitLove() {
+        const comment = document.getElementById('loveComment').value.trim();
+        if(currentRating === 0 && comment === '') {
+            document.getElementById('commentResponse').innerHTML = '💬 Please rate or say something, my love.';
+            return;
+        }
+        let responseText = '';
+        if(currentRating > 0) {
+            responseText += `⭐ ${currentRating}/5 stars. `;
+        }
+        if(comment !== '') {
+            responseText += `💬 "${comment}"`;
+        } else {
+            responseText += `💬 You didn't write a comment, but your eyes say it all.`;
+        }
+        responseText += ` 💖 Thank you, my love!`;
+        document.getElementById('commentResponse').innerHTML = responseText;
+        confetti({particleCount:100, spread:70});
+    }
+
+    // extra particles effect
+    function createParticle() {
+        const p = document.createElement('div');
+        p.style = 'position:fixed; width:4px;height:4px; background:#ff4d6d; border-radius:50%; left:'+Math.random()*100+'%; top:'+Math.random()*100+'%; animation:floatUp 3s forwards; pointer-events:none; z-index:9998;';
+        document.body.appendChild(p);
+        setTimeout(()=>p.remove(),3000);
+    }
+    setInterval(createParticle, 150);
+
+    // Expose functions globally
+    window.showQuiz = showQuiz; window.showHeartGame = showHeartGame;
+    window.checkAnswer = checkAnswer; window.startJourney = startJourney;  // renamed from startExperience
+    window.showSurprise = showSurprise; window.answerYes = answerYes;
+    window.setRating = setRating; window.submitLove = submitLove;
+    // also keep startExperience for any other reference
+    window.startExperience = startExperience;
+</script>
+
 </body>
 </html>
